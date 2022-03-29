@@ -1,0 +1,23 @@
+doctype html
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Nueva Tienda 
+        link(rel='stylesheet', href='/css/tiendas.css')
+    body 
+        div#nuevatienda
+            form(id='nuevatienda' action='/tiendas/nueva' method='post')
+                input(name='titulo' type='text' placeholder='Título de la tienda')
+                br
+                textarea(name='descripcion' placeholder='Descripción de la tienda')
+                br
+                label(for='tarjeta') Admite Credit Card (S/N)
+                select(name='aceptaCreditCard' id='tarjeta')
+                    option(value=1) SI 
+                    option(value=0) NO
+                br
+                br
+                input(type='submit' value='Crear') 
+        

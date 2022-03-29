@@ -1,0 +1,49 @@
+// Colores
+$rojo: #FC4349;
+$rojo-claro: #ce9d9d;
+$gris: #d7dadb;
+$azul: #2c3e50;
+$azul-claro: #6dbcdb;
+$rosa: #b76e79;
+$blanco: #fff;
+$negro: #000;
+$fondonormal:  rgb(223, 223, 223);
+$fondodestino: brown; 
+
+//Fuentes
+$small: 16px;
+$medium: 20px;
+$big: 48px;
+
+$large-padding: 10px 15px;
+$big-padding: 20px 30px;
+
+$default-margin-top: 30px;
+$big-margin-top: 90px;
+
+$border-radius: 4px;
+
+$colorfondo: rgb(247, 243, 243);
+//THEME COLORES
+:root {
+    --colorfondo: rgb(201, 201, 201);
+    --colortexto1: rgb(82, 81, 81);
+    --colorbotones:rgb(184, 87, 32);
+}
+
+//Ajustar colores segun Ajustes del navegador
+@media (prefers-color-scheme: dark) {
+    :root {
+        --colorfondo: rgb(59, 56, 56);
+        --colortexto1: rgb(226, 226, 226);
+        --colorbotones:rgb(212, 155, 205);
+    }
+}
+@media (prefers-color-scheme: light) {
+    :root {
+        --colorfondo: rgb(201, 201, 201);
+        --colortexto1: rgb(82, 81, 81);
+        --colorbotones:rgb(184, 87, 32);
+    }
+}
+

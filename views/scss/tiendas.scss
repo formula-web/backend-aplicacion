@@ -1,0 +1,23 @@
+@import './_fmestilos.scss';
+div#nuevatienda {
+    padding: 20px;
+    @include centrado-vertical-horizontal; 
+    
+}
+form#nuevatienda {
+    display: inline-block;
+
+    padding:20px;
+    background-color: rgb(218, 206, 206);
+    
+
+    input, textarea{
+        min-width: 30em;
+        font-size: 1.2rem;
+     }
+     select {
+         font-size: 1.2rem;
+         width: 3rem;
+     }
+     input[type='submit'] { cursor: pointer; font-weight: bold; }
+}
