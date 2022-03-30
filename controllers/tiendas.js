@@ -2,16 +2,16 @@
 // fuciones que generan la response a los request hacia los recursos http de la entidad 
 // Se exportan las funciones en un objeto anónimo, importado y usado desde el archivo de rutas (en /routes), el archivo de rutas asocia las rutas http con los métodos definidos en aqui
 
-const { request } = require("express");
+//const { request } = require("express");
 const Tienda = require("../models/tienda");
 const cargadorficheros = require('../config/cargadorficheros-multer.js');
 
 
 //middlware buscar: se usa en las demás funciones para buscar un item. Integrado como middleware:
-//segundo argumento en router.get, .update, .delete de la ruta con id:  "/tiendas/:id" 
+//primer argumento en router.get, .update, .delete de la ruta con slug:  "/tiendas/:slug" 
 function buscar ( request, response, next) {
     //console.log("buscando", request.params.id);
-    Tienda.findById (request.params.id)
+    Tienda.find ( {slug:request.params.slug } )
     .then((tienda)=>{
         //console.log("tienda encontrada:", tienda);
         request.tienda = tienda; //guarda tienda encontrada en el objeto request de la peticion
@@ -114,7 +114,19 @@ function ejemplo (request, response) {
         });
     }
 
-    function buscarid( request, response) {
+
+    function borrar( request, response) {
+        console.log("borrando titulo=", request.params.titulo);
+        Tienda.findOneAndRemove ( {titulo:request.params.titulo})
+        .then ( doc=>{
+            response.send( "Borrado "+request.params.titulo);
+        })
+        .catch ( error=>{
+            response.send(error);
+        });
+    }
+
+    function mostrar( request, response) {
         console.log("mostrando request.tienda", request.tienda);
         response.json( request.tienda );
     } 
@@ -146,6 +158,6 @@ function ejemplo (request, response) {
 
 
 
-module.exports={ buscar, modificar, ejemplo, formulario, crear, listado, listadoPaginado, titulo, buscarid, borrar, cargadorMiddleware, verFicheros };
+module.exports={ buscar, modificar, ejemplo, formulario, crear, listado, listadoPaginado, titulo,  mostrar, borrar, cargadorMiddleware, verFicheros };
 //Equivale a:
 //module.exports {ejemplo: ejemplo, formulario: formulario, ...}

@@ -8,8 +8,8 @@ var tiendas = require('../controllers/tiendas');
 router.route('/tiendas').get( tiendas.listadoPaginado );
 router.route('/tiendasall').get( tiendas.listado ).post( tiendas.ejemplo );
 router.route('/tiendas/nueva').get(tiendas.formulario).post(tiendas.crear);
-router.route('/tiendas/:id')
-.get(tiendas.buscar, tiendas.buscarid)
+router.route('/tiendas/:slug')
+.get(tiendas.buscar, tiendas.mostrar)
 .delete(tiendas.borrar, tiendas.buscar)
 .put(tiendas.buscar, tiendas.modificar);
 router.route('/ficheros')
