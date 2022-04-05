@@ -16,7 +16,12 @@ let tiendaSchema = new mongoose.Schema({
     imagenPortada: String,
     imagenAvatar: String,
     openHour: Number,
-    closeHour: Number
+    closeHour: Number,
+    _usuario:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'Usuario',
+        required: true
+    }
 
 });
 // Añadir un método al Schema

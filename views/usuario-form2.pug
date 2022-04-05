@@ -1,0 +1,33 @@
+//FORMULARIO PARA UPDATE USUARIO
+doctype html
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Nueva Usuario
+        link(rel='stylesheet', href='/css/usuarios.css')
+    body 
+        div#nuevousuario
+            form(id='nuevousuario' action='/usuarios/update' method='post')
+                input(name='email' type='email' placeholder='Email' id='email' required value=email)
+                br
+                input(name='nombre' type='text' placeholder='Nombre usuario' id='nombre' required value=nombre autocomplete='off')
+                br
+                input(id='password' name='password' placeholder='Password' type='password' value=password )
+                br
+                label(for='admin') Administrador?
+                select(name='admin' id='admin')
+                    option(value=1) SI 
+                    option(value=0) NO
+                br
+                br
+                input(type='submit' value='Actualizar') 
+                br
+                button(id='botonxml')
+                   b  Boton XMLHttpRequest
+                button(id='botonfetch')
+                    b Boton Fetch
+                br
+                div#mensaje
+script(src='/js/usuarios-views.js')

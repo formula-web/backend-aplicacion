@@ -77,47 +77,6 @@ button {
   display: block;
 }
 
-#contenedor {
-  margin-top: 20px;
-  padding: 20px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-#contenedor #col1 {
-  border: 1px solid gray;
-  padding: 5px;
-}
-
-#contenedor #col1 ul {
-  list-style: none;
-  padding-left: 0px;
-}
-
-#contenedor #col2 {
-  border: 1px solid gray;
-  padding: 5px;
-}
-
-#contenedor #col3 {
-  border: 1px solid gray;
-  padding: 5px;
-}
-
-#contenedor #col4 {
-  border: 1px solid gray;
-  padding: 5px;
-}
-
-#contenedor #col4 textarea {
-  font-size: 1.2rem;
-}
-
-div#chatsabiertos textarea {
-  font-size: 1.2rem;
-}
-
-div#chatsabiertos button {
-  vertical-align: top;
+a {
+  display: block;
 }

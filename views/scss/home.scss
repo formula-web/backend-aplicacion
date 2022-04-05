@@ -1,45 +1,5 @@
 @import './_fmestilos.scss';
 
-#contenedor {
-    margin-top: 20px;
-    padding: 20px;
-    display:flex;
-
-
-    #col1 {
-        //flex-basis: 25vw;
-        border: 1px solid gray;
-        padding: 5px;
-        ul { list-style: none; padding-left:0px;
-
-        }
-    }
-    #col2 {
-        //flex-basis: 25vw;
-        border: 1px solid gray;
-        padding: 5px;
-    }
-    #col3 {
-        //flex-basis: 10vw;
-        border: 1px solid gray;
-        padding: 5px;
-    }
-    #col4 {
-        //flex-basis: 25vw;
-        border: 1px solid gray;
-        padding: 5px;
-        textarea {
-            font-size:1.2rem;
-        }
-    }
+a {
+    display: block;
 }
-
-div#chatsabiertos {
-    textarea {
-        font-size:1.2rem;
-    }
-    button {
-        vertical-align: top;
-    }
-}
-

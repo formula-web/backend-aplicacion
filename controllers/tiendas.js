@@ -93,7 +93,7 @@ function ejemplo (request, response) {
     function listadoPaginado (request, response) {
         Tienda.paginate( { },{ page:request.query.pagina || 1, limit:4, sort:{'_id':-1} } )
         .then ( docs=>{
-            //console.log("Docs:", docs);
+            console.log("Request.user:", request.user);
             response.send( docs);
         })
         .catch ( error=>{

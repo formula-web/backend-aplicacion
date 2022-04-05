@@ -2,9 +2,7 @@
 // fuciones que generan la response a los request hacia los recursos http de la entidad 
 // Se exportan las funciones en un objeto anónimo, importado y usado desde el archivo de rutas (en /routes), el archivo de rutas asocia las rutas http con los métodos definidos en aqui
 
-//const { request } = require("express");
 const Usuario = require("../models/usuario");
-
 
 function buscar ( request, response, next) {
     //console.log("buscando", request.params.id);
@@ -21,7 +19,7 @@ function buscar ( request, response, next) {
     })
 }
 
-function crear (request, response) {
+function crear (request, response, next) {
     Usuario.create( 
     { 
         email:request.body.email, 
@@ -29,21 +27,54 @@ function crear (request, response) {
         password: request.body.password
     }
     )
-    .then( function( Usuario ) {
-        console.log("...Usuario creado OK.");  
-        response.send(Usuario);
-
+    .then( function( usuario ) {
+        console.log("...Usuario creado OK... ->next()");
+        request.usuario = usuario;  
+        next();
     }  
     )
    .catch( error=>{
        console.log("Error creando Usuario:",error);
        response.status(422).send(error.message);
+       next();
     }) 
 }
+
+function actualizar (request, response ) {
+    console.log('email recibido: ', request.body.email);
+    console.log("actualizar... request:",request.body);
+    Usuario.count( ).then( (cuenta)=>{
+        if (!cuenta) { response.status(422).send("Usuario no existe"); return;}
+    })
+
+    Usuario.updateOne( { email:request.body.email }, 
+    { 
+        nombre: request.body.nombre,
+        password: request.body.password,
+        admin: request.body.admin,
+
+    }
+    )
+    .then( function( usuario ) {
+        console.log("...Usuario Actualizado ok");
+        response.status(200).send( {mensaje:"Actualizado OK"});  
+     }  
+    )
+   .catch( error=>{
+       console.log("Error actualizando Usuario:",error);
+       response.status(422).send( {mensaje:error.message} );
+    }) 
+}
+
+
 
 function formulario(request, response) {
     response.render('usuario-form');
 }
+function formularioUpdate(request, response) {
+    response.render('usuario-form2', {email:'yo@yo.com', nombre:'Paco', password:'1234'});
+}
+
 
 function listadoPaginado (request, response) {
     Usuario.paginate( { },{ page:request.query.pagina || 1, limit:4, sort:{'_id':-1} } )
@@ -58,4 +89,4 @@ function listadoPaginado (request, response) {
 }
 
 
-module.exports = { buscar, crear, formulario, listadoPaginado };
+module.exports = { buscar, crear, formulario, listadoPaginado, formularioUpdate, actualizar };

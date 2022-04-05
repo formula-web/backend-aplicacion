@@ -77,7 +77,7 @@ button {
   display: block;
 }
 
-div#nuevousuario {
+div#login {
   padding: 20px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -90,24 +90,18 @@ div#nuevousuario {
           justify-content: center;
 }
 
-form#nuevousuario {
+form#login {
   display: inline-block;
   padding: 20px;
   background-color: #dacece;
 }
 
-form#nuevousuario input, form#nuevousuario textarea {
+form#login input {
   min-width: 30em;
   font-size: 1.2rem;
 }
 
-form#nuevousuario select {
-  font-size: 1.2rem;
-  width: 3rem;
-  margin-left: 10px;
-}
-
-form#nuevousuario input[type='submit'] {
+form#login input[type='submit'] {
   cursor: pointer;
   font-weight: bold;
 }

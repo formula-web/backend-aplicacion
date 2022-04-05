@@ -6,18 +6,32 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const expressjwt = require('express-jwt');
+//const bodyparser = require('body-parser');
+const sesion = require('express-session');
+
 
 // Cargar rutas a recursos (enlazan recursos http con controllers)
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var tiendasRouter=require('./routes/tiendas-rutas');
 var usuariosRouter=require('./routes/usuarios-rutas');
+var sesionesRouter=require('./routes/sesiones-rutas');
 
+var app = express();
+
+//Integrar Middleware manejo SESION en memoria
+app.use(sesion( {
+  secret:['fsdfsdfsdafdscc11rr', 'kpjffsffas'],
+  saveUninitialized: false,
+  resave: false
+}));
 
 var app = express();
 
 // rutas recursos estaticos
 app.use('/css',express.static('css')); 
+app.use('/js' ,express.static('views/js')); 
 
 
 
@@ -35,15 +49,35 @@ app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
+//app.use(bodyparser.json());
 app.use(express.urlencoded({ extended: false }));
+//app.use(bodyparser.urlencoded( {extended:false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+
+
+
+
+//PROTEGER PAGINAS - ACCESO A USUARIOS CON TOKEN JWT VALIDO EN LA REQUEST  (Si el usuario tiene token valido se asume logado ?)
+//Libreria JWT:  express-jwt  para validar Tokens JWT
+// Al integrarla con app.use,  express va a buscar el token jwt en todas las peticiones
+app.use( 
+  expressjwt( {
+    secret: config.jwtSecret, // clave secret para generar los jwt configurada en config.js
+    algorithms: ['HS256']     // algoritmos de encriptacion, obligatorio
+  })
+  .unless( { path: ['/sesiones/nueva'], method:'GET' } )   
+)
+
 
 // RUTAS - añadir al stack http
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use(tiendasRouter);
 app.use(usuariosRouter);
+app.use(sesionesRouter);
 
 
 //MANEJO DE ERRORES
