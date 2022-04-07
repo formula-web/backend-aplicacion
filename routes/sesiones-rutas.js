@@ -9,7 +9,8 @@ router.route('/sesiones/nueva')
   .get(sesiones.formulariologin)
 
   .post(sesiones.autenticar, sesiones.generarToken, sesiones.enviarToken);
-
+router.route('/sesiones/logout')
+  .get(sesiones.logout);
 
 
 module.exports = router;

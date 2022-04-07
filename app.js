@@ -8,7 +8,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const expressjwt = require('express-jwt');
 //const bodyparser = require('body-parser');
-const sesion = require('express-session');
+const session = require('express-session');
 
 
 // Cargar rutas a recursos (enlazan recursos http con controllers)
@@ -21,13 +21,12 @@ var sesionesRouter=require('./routes/sesiones-rutas');
 var app = express();
 
 //Integrar Middleware manejo SESION en memoria
-app.use(sesion( {
+app.use(session( {
   secret:['fsdfsdfsdafdscc11rr', 'kpjffsffas'],
   saveUninitialized: false,
   resave: false
 }));
 
-var app = express();
 
 // rutas recursos estaticos
 app.use('/css',express.static('css')); 
@@ -56,20 +55,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
-
-
-
 //PROTEGER PAGINAS - ACCESO A USUARIOS CON TOKEN JWT VALIDO EN LA REQUEST  (Si el usuario tiene token valido se asume logado ?)
 //Libreria JWT:  express-jwt  para validar Tokens JWT
 // Al integrarla con app.use,  express va a buscar el token jwt en todas las peticiones
-app.use( 
-  expressjwt( {
-    secret: config.jwtSecret, // clave secret para generar los jwt configurada en config.js
-    algorithms: ['HS256']     // algoritmos de encriptacion, obligatorio
-  })
-  .unless( { path: ['/sesiones/nueva'], method:'GET' } )   
-)
+//app.use( 
+//  expressjwt( {
+//    secret: config.jwtSecret, // clave secret para generar los jwt configurada en config.js
+//    algorithms: ['HS256']     // algoritmos de encriptacion, obligatorio
+//  })
+//  .unless( { path: ['/sesiones/nueva'], method:'GET' } )   
+//)
 
 
 // RUTAS - añadir al stack http

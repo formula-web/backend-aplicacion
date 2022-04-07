@@ -59,11 +59,13 @@ function ejemplo (request, response) {
     }
 
     function crear (request, response) {
+        console.log("Tienda.crear()...");
         Tienda.create( 
         { 
             titulo:request.body.titulo, 
             descripcion: request.body.descripcion,
-            aceptaCreditCard: request.body.aceptaCreditCard
+            aceptaCreditCard: request.body.aceptaCreditCard,
+            _usuario: request.session.userId 
         }
         )
         .then( function( tienda ) {
@@ -156,8 +158,20 @@ function ejemplo (request, response) {
         response.send("Ficheros Subidos"); 
     }
 
+    // Verifica que la tienda que se acaba de buscar (copiada en request.tienda), su usuario propietario coincide con el
+    // que está lanzando la petición actual (copiado request.session.usuario)
+    function verificarPropietario( request, response, next ) {
+        console.log("verificarPropietario()...");
+        console.log("Sesion:", request.session.usuario);
+        console.log("request.tienda:", request.tienda);
+        if ( !request.tienda ) next(); 
+        if ( !request.session.usuario ) next (new Error("Ningun usuario en Login"));
+        if ( (request.tienda._usuario == request.session.usuario._id) || request.session.usuario.admin ) return next();
+        else next (new Error("Usuario no tiene permisos"));
+    }
 
 
-module.exports={ buscar, modificar, ejemplo, formulario, crear, listado, listadoPaginado, titulo,  mostrar, borrar, cargadorMiddleware, verFicheros };
+
+module.exports={ buscar, modificar, ejemplo, formulario, crear, listado, listadoPaginado, titulo,  mostrar, borrar, cargadorMiddleware, verFicheros, verificarPropietario };
 //Equivale a:
 //module.exports {ejemplo: ejemplo, formulario: formulario, ...}

@@ -4,16 +4,16 @@ const config = require('../config/config.js');
 const expressjwt = require('express-jwt'); // express jwt para verificar tokens jwt recibidos en la request
 
 var tiendas = require('../controllers/tiendas');
-
+const Sesion = require("../controllers/sesiones");
 
 /* Rutas a recursos http de tiendas */
-router.route('/tiendas').get(  expressjwt( { secret: config.jwtSecret, algorithms: ['HS256']  }) , tiendas.listadoPaginado );
+router.route('/tiendas').get( Sesion.verificarLogin, tiendas.listadoPaginado );
 router.route('/tiendasall').get( tiendas.listado ).post( tiendas.ejemplo );
-router.route('/tiendas/nueva').get(tiendas.formulario).post(tiendas.crear);
+router.route('/tiendas/nueva').get( Sesion.verificarLogin, tiendas.formulario).post(tiendas.crear);
 router.route('/tiendas/:slug')
-.get(tiendas.buscar, tiendas.mostrar)
-.delete(tiendas.borrar, tiendas.buscar)
-.put(tiendas.buscar, tiendas.modificar);
+.get(tiendas.buscar, tiendas.verificarPropietario, tiendas.mostrar)
+.delete(tiendas.buscar, tiendas.verificarPropietario, tiendas.borrar)
+.put(tiendas.buscar, tiendas.verificarPropietario,  tiendas.modificar);
 router.route('/ficheros')
 .put(tiendas.cargadorMiddleware(), tiendas.verFicheros);
 

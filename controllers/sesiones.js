@@ -9,16 +9,29 @@ const Usuario = require('../models/usuario');
 function autenticar( request, response, next) {
     Usuario.findOne({email: request.body.email})
     .then( usuario=> {
+        if ( ! usuario ) return next( new Error("Usuario no existe."));
         usuario.verifyPassword(request.body.password) //plugin bcrypt chequea password form vs hash en mongodb
           .then( valida=>{
-              if (valida) { request.usuario = usuario;  console.log("Password OK"); next();  }   // Password OK
+              if (valida) {  // Password OK
+                  request.session.userId = usuario._id;
+                  request.session.usuario = usuario;
+                  request.session.jwt='aun vacio';
+                  request.usuario = usuario;  
+                  console.log("Password OK"); 
+                  next();  
+              }   
               else {  console.log("Password KO"); next(new Error('Credenciales no válidas'));}   // Password Error 
           })
     })
     .catch ( error=>next(error));
 }
 
-
+//verificar si hay un usuario logado. Antes de acceder a recursos protegidos
+function verificarLogin(req, res, next) {
+    if (!req.session) { res.status(401).send("Usuario no logado"); return; }
+    if (!req.session.userId )  { res.status(401).send("Usuario no logado"); return; }
+    next();
+}
 
 
 
@@ -35,6 +48,7 @@ function generarToken( request, response, next) {
 function enviarToken( request, response, next ) {
     if ( request.usuario ) {
         console.log("enviarToken():", request.token);
+        request.session.jwt += request.token;
         response.json({user:request.usuario, jwt:request.token})
     } else {
        console.log("Error al enviarToken(), no existe request.usuario");
@@ -46,4 +60,9 @@ function formulariologin(request, response) {
     response.render('login-form');
 }
 
-module.exports = { autenticar, generarToken, enviarToken, formulariologin};
+function logout(request, response) {
+    request.session.destroy();
+    response.redirect('http://localhost:3000');
+}
+
+module.exports = { autenticar, generarToken, enviarToken, formulariologin, verificarLogin, logout};

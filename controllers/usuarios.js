@@ -77,7 +77,7 @@ function formularioUpdate(request, response) {
 
 
 function listadoPaginado (request, response) {
-    Usuario.paginate( { },{ page:request.query.pagina || 1, limit:4, sort:{'_id':-1} } )
+    Usuario.paginate( { },{ page:request.query.pagina || 1, limit:20, sort:{'_id':-1} } )
     .then ( docs=>{
         //console.log("Docs:", docs);
         response.send( docs);
@@ -85,8 +85,19 @@ function listadoPaginado (request, response) {
     .catch ( error=>{
         console.log("Error listado",error);
         response.send("Error en listado");
-    } );
+    } );{}
+}
+
+// Retorna listado de tiendas del usuario actual ID de usuario el que esté en request.session (se guarda al hacer login)
+// usa la entidad virtual "tiendas" creada en el scheme de usuarios
+function misTiendas(request, response) {
+    Usuario.findOne( {'_id': request.session.usuario._id } )
+    .then( usuario=>{
+        usuario.usuarioTiendas.then( tiendas=>{
+            response.json(tiendas);
+        }).catch( error=>{ response.json(error)});
+    }).catch(error=>{response.json(error)});
 }
 
 
-module.exports = { buscar, crear, formulario, listadoPaginado, formularioUpdate, actualizar };
+module.exports = { buscar, crear, formulario, listadoPaginado, formularioUpdate, actualizar, misTiendas };

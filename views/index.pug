@@ -8,10 +8,12 @@ html(lang="en")
         link(rel='stylesheet', href='/css/home.css')
     body 
         h1=`${title}`  
-        p Welcome to #{title}   USUARIO LOGADO: #{usuario}
-        a(href='/usuarios') /usuarios LISTADO USUARIOS
-        a(href='/usuarios/update') /usuarios/update  MODIFICAR USUARIO
-        a(href='/usuarios/nuevo') /usuarios/nuevo  CREAR USUARIO
-        a(href='/tiendas')  /tiendas  LISTADO TIENDAS
-        a(href='/tiendas/nueva')  /tiendas/nueva  CREAR TIENDA
-        a(href='/sesiones/nueva') /sesiones/nueva    LOGIN
+        p Welcome to #{title}   USUARIO LOGADO: #{usuario}  TOKEN: #{token}
+        a(href='/usuarios' target='_blank') /usuarios LISTADO USUARIOS
+        a(href='/usuarios/update'  target='_blank') /usuarios/update  MODIFICAR USUARIO
+        a(href='/usuarios/nuevo'  target='_blank') /usuarios/nuevo  CREAR USUARIO
+        a(href='/usuarios/mistiendas'  target='_blank') /usuarios/mistiendas  TIENDAS DEL USUARIO LOGADO
+        a(href='/tiendas'  target='_blank')  /tiendas  LISTADO TIENDAS
+        a(href='/tiendas/nueva' target='_blank')  /tiendas/nueva  CREAR TIENDA
+        a(href='/sesiones/nueva' target='_blank') /sesiones/nueva    LOGIN
+        a(href='/sesiones/logout' ) /sesiones/logout  LOGOUT
