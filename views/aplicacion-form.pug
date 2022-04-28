@@ -1,0 +1,17 @@
+doctype html
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Nueva Tienda 
+        link(rel='stylesheet', href='/css/aplicaciones.css')
+    body 
+        div#nuevaaplicacion
+            form(id='nuevaaplicacion' action='/aplicacion/nueva' method='post')
+                input(name='nombre' type='text' placeholder='Aplicacion')
+                br
+                input(name='jwt'    type='text' placeholder='jwt')
+                br
+                br
+                input(type='submit' value='Crear') 

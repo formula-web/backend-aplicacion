@@ -1,0 +1,39 @@
+doctype html
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Favoritas
+        link(rel='stylesheet', href='/css/usuarios.css')
+    body#favoritas-form 
+        h1 Formulario Tiendas Favoritas Usuario
+        h2 Recibe usuario, array tiendas y array favoritas
+        h3 Los checks se rellenan si existe el usuario y tienda en la entidad tiendasfavoritas 
+        h3 El boton crear crea un nuevo doc en tiendasfavoritas con el usuario y tienda indicados 
+        h3 Cambiar el check no hace nada (podría crear/borrar en tiendasfavoritas usando ajax)
+
+        div#divfavoritas
+            p Tiendas de Usuario #{usuario.email} 
+
+            form(id='favoritasform' action='/favoritas/create' method='post')
+                div.contenidoform
+                    each tienda in tiendas
+    
+                        div.col1
+                            span Es favorita:&nbsp; &nbsp;
+                            input(type='checkbox' id=tienda._id class='botontoggle')
+                            label(for=tienda._id) 
+                            span(id='titulo') #{tienda.titulo}
+                        div.col2
+                            span &nbsp;&nbsp; #{tienda._id}
+                br
+                br
+                input(name='usuario' placeholder='Usuario id?' value=`${usuario._id}` ) 
+                span &nbsp;
+                input(name='tienda'  placeholder='Tienda id?')
+                apN &nbsp;
+                input(type='submit' value='Crear Favorita') 
+        script(src='/js/favoritas-form.js')
+        script. 
+            activarChecks(!{JSON.stringify(tiendas)}, !{JSON.stringify(favoritas)}  );        

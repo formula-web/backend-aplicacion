@@ -93,6 +93,7 @@ function listadoPaginado (request, response) {
 function misTiendas(request, response) {
     Usuario.findOne( {'_id': request.session.usuario._id } )
     .then( usuario=>{
+        //.usuarioTiendas es un "virtual" (vista) definida en el model usuario y que retorna un promise de las tiendas de ese usuario
         usuario.usuarioTiendas.then( tiendas=>{
             response.json(tiendas);
         }).catch( error=>{ response.json(error)});

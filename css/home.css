@@ -79,4 +79,10 @@ button {
 
 a {
   display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+html {
+  padding: 5px;
 }

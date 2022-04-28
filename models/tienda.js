@@ -17,6 +17,7 @@ let tiendaSchema = new mongoose.Schema({
     imagenAvatar: String,
     openHour: Number,
     closeHour: Number,
+    // eL campo _usuario es solo un id, del documento usuario, que se define así
     _usuario:{
         type:mongoose.Schema.Types.ObjectId,
         ref: 'Usuario',

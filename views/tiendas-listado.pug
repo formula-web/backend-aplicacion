@@ -1,0 +1,35 @@
+doctype html
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Aplicacion NODE - Listado de Tiendas
+        link(rel='stylesheet', href='/css/tiendas.css')
+    body 
+        div#listadotiendas
+            h1 Listado de Tiendas. 
+            p=`Todas las tiendas (${tiendas.limit} tiendas por página)`
+            each tienda in tiendas.docs
+                h2=tienda.titulo
+            button(id="prev")
+                b Prev
+            button(id="next")
+                b Next
+            div(id='mensaje')
+    script. 
+        let pagina=#{tiendas.page};
+        document.querySelector("#mensaje").innerHTML='Página ' + pagina + ' de '+ #{tiendas.pages};
+        let url='/tiendas';
+        document.querySelector("#next").addEventListener( 'click',ev=>{
+            if (pagina>=#{tiendas.pages}) return;
+            pagina++;
+            document.querySelector("#mensaje").innerHTML='Página ' + pagina;
+            document.location.href=url+"?pagina="+pagina;
+        })
+        document.querySelector("#prev").addEventListener( 'click',ev=>{
+            if (pagina<=1) return; 
+            pagina--;
+            document.querySelector("#mensaje").innerHTML='Página ' + pagina;
+            document.location.href=url+"?pagina="+pagina;
+        })

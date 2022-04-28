@@ -9,16 +9,23 @@ var logger = require('morgan');
 const expressjwt = require('express-jwt');
 //const bodyparser = require('body-parser');
 const session = require('express-session');
+const cabeceraCORS = require('./middlewares/cabeceraCORS')();
+
+
+
 
 
 // Cargar rutas a recursos (enlazan recursos http con controllers)
-var indexRouter = require('./routes/index');
+var rutasRouter = require('./routes/rutas');
+//var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var tiendasRouter=require('./routes/tiendas-rutas');
-var usuariosRouter=require('./routes/usuarios-rutas');
-var sesionesRouter=require('./routes/sesiones-rutas');
+//var tiendasRouter=require('./routes/tiendas-rutas');
+//var usuariosRouter=require('./routes/usuarios-rutas');
+//var sesionesRouter=require('./routes/sesiones-rutas');
+//var favoritasRouter=require('./routes/favoritas-rutas');
 
 var app = express();
+app.locals.yomismo="paco mendieta";
 
 //Integrar Middleware manejo SESION en memoria
 app.use(session( {
@@ -26,6 +33,9 @@ app.use(session( {
   saveUninitialized: false,
   resave: false
 }));
+
+//Meter Cabeceras CORs en todas las "responses" para habilitar clientes AJAX
+app.use(cabeceraCORS.unless({path:'/public'}));
 
 
 // rutas recursos estaticos
@@ -57,7 +67,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //PROTEGER PAGINAS - ACCESO A USUARIOS CON TOKEN JWT VALIDO EN LA REQUEST  (Si el usuario tiene token valido se asume logado ?)
 //Libreria JWT:  express-jwt  para validar Tokens JWT
-// Al integrarla con app.use,  express va a buscar el token jwt en todas las peticiones
+// Al integrarla con app.use,  express va a buscar el token jwt en todas las peticiones, excepto las mencionadas en .unless
 //app.use( 
 //  expressjwt( {
 //    secret: config.jwtSecret, // clave secret para generar los jwt configurada en config.js
@@ -68,11 +78,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // RUTAS - añadir al stack http
-app.use('/', indexRouter);
+//app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use(tiendasRouter);
-app.use(usuariosRouter);
-app.use(sesionesRouter);
+//app.use(tiendasRouter);
+//app.use(usuariosRouter);
+//app.use(sesionesRouter);
+//app.use(favoritasRouter);
+app.use(rutasRouter);
 
 
 //MANEJO DE ERRORES

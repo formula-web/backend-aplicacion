@@ -5,18 +5,18 @@ const secreto = require("../config/config").jwtSecret;
 const bcrypt = require('mongoose-bcrypt');
 const Usuario = require('../models/usuario');
 
-//Validar Usuario y Password formato middleware tras formulario login: se espera email y password en request.body
+//autenticar (LOGIN) Validar Usuario y Password formato middleware tras formulario login: se espera email y password en request.body
 function autenticar( request, response, next) {
     Usuario.findOne({email: request.body.email})
     .then( usuario=> {
         if ( ! usuario ) return next( new Error("Usuario no existe."));
         usuario.verifyPassword(request.body.password) //plugin bcrypt chequea password form vs hash en mongodb
           .then( valida=>{
-              if (valida) {  // Password OK
+              if (valida) {  // Password OK. Rellenar datos del objeto global request.session mantenido por express-session
                   request.session.userId = usuario._id;
                   request.session.usuario = usuario;
-                  request.session.jwt='aun vacio';
-                  request.usuario = usuario;  
+                  request.session.jwt='';
+                  request.usuario = usuario;   //   esto solo vale para la request de la peticion en curso, para generar el jwt
                   console.log("Password OK"); 
                   next();  
               }   

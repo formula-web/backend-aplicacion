@@ -12,24 +12,7 @@ window.onload=()=>{
         if (!hayvacios)  bactualizar.disabled=false;
         else bactualizar.disabled=true;
     });
-    document.querySelector("#botonxml").addEventListener('click', botonxml);
     document.querySelector("#botonfetch").addEventListener('click', botonfetch);
-}
-
-function botonxml(ev) {
-    ev.preventDefault();
-    console.log("clic en boton xmlhttprequest");
-    var formData = new FormData( document.querySelector("form") );
-    var req = new XMLHttpRequest();
-    req.open('POST', '/usuarios/update');
-    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    req.send(formData);
-    req.onreadystatechange=function(data){
-        console.log("Sale del xmlhttprequest",data);
-        var mensaje=document.querySelector("form > div");
-        console.log( "Modificado OK. Res="+req.responseText );
-        mensaje.innerHTML="Modificado OK. Status="+req.status+" Body="+req.responseText;        
-    }
 }
 
 function botonfetch(ev) {

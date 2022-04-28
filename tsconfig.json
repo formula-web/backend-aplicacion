@@ -1,0 +1,12 @@
+{
+    "complilerOptions" :  {
+		"outDir":     "out",
+	     "target" :     "es5",
+	     "module" :  "commonjs", 
+
+	     "removeComments" :    true,
+	     "noImplicityAny":   true,
+     "sourceMap" :        true,
+	    "watch":          "true"
+	}
+}

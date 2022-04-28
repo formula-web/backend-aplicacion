@@ -8,12 +8,31 @@ html(lang="en")
         link(rel='stylesheet', href='/css/home.css')
     body 
         h1=`${title}`  
-        p Welcome to #{title}   USUARIO LOGADO: #{usuario}  TOKEN: #{token}
+        p Welcome to #{title} #{objeto.titulo}  USUARIO LOGADO: #{usuario}  
+        p TOKEN: #{token}
+        p Dueño de la aplicacion guardado en app.locals:  #{yomismo}
         a(href='/usuarios' target='_blank') /usuarios LISTADO USUARIOS
         a(href='/usuarios/update'  target='_blank') /usuarios/update  MODIFICAR USUARIO
         a(href='/usuarios/nuevo'  target='_blank') /usuarios/nuevo  CREAR USUARIO
         a(href='/usuarios/mistiendas'  target='_blank') /usuarios/mistiendas  TIENDAS DEL USUARIO LOGADO
+        a(href='/usuarios/favoritas'  target='_blank') /usuarios/favoritas  TIENDAS FAVORITAS DEL USUARIO LOGADO
         a(href='/tiendas'  target='_blank')  /tiendas  LISTADO TIENDAS
-        a(href='/tiendas/nueva' target='_blank')  /tiendas/nueva  CREAR TIENDA
+        a(href='/tiendas/nueva' target='_blank')  /tiendas/nueva  CREAR TIENDA        
+        a(href='/aplicacion' target='_blank')  /aplicacion  APLICACIONES - HOME
+        a(href='/aplicacion/nueva' target='_blank')  /aplicacion/nueva  CREAR APLICACION
         a(href='/sesiones/nueva' target='_blank') /sesiones/nueva    LOGIN
         a(href='/sesiones/logout' ) /sesiones/logout  LOGOUT
+
+        -let pugvar = "Valor de la Label"
+        label=pugvar
+        -let name = "Jorge Matias", age = 22, address = "New York City"
+        -let codigo = "<a href='/'>Enlace a home<a>"
+        p  Mi nombre es #{name} y mi ciudad es #{address} y el enlace: !{codigo}
+        -let codigojs='<script>console.log("Hola amigo")</script>'
+        p  Interpretando javascript directamente: !{codigojs} a ver que hace
+    script(src='js/index.js')
+    script. 
+        sumar(1,1,'#{title}', !{JSON.stringify(objeto)});
+
+
+       

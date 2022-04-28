@@ -2,16 +2,16 @@
 // fuciones que generan la response a los request hacia los recursos http de la entidad 
 // Se exportan las funciones en un objeto anónimo, importado y usado desde el archivo de rutas (en /routes), el archivo de rutas asocia las rutas http con los métodos definidos en aqui
 
-//const { request } = require("express");
+const { request } = require("express");
 const Tienda = require("../models/tienda");
 const cargadorficheros = require('../config/cargadorficheros-multer.js');
 
 
 //middlware buscar: se usa en las demás funciones para buscar un item. Integrado como middleware:
-//primer argumento en router.get, .update, .delete de la ruta con slug:  "/tiendas/:slug" 
+//segundo argumento en router.get, .update, .delete de la ruta con id:  "/tiendas/:id" 
 function buscar ( request, response, next) {
     //console.log("buscando", request.params.id);
-    Tienda.find ( {slug:request.params.slug } )
+    Tienda.findById (request.params.id)
     .then((tienda)=>{
         //console.log("tienda encontrada:", tienda);
         request.tienda = tienda; //guarda tienda encontrada en el objeto request de la peticion
@@ -59,17 +59,28 @@ function ejemplo (request, response) {
     }
 
     function crear (request, response) {
-        console.log("Tienda.crear()...");
+        //si peticion de cliente remoto, coger usuario del token jwt guardado en request.user.id
+        //si peticion local, coger usuario del cliente logado en session.userId
+        console.log("TIENDAS.crear()...");
+        console.log("request.session.userId:", request.session.userId);
+        console.log("request.user.id:", request.user.id);
+        let usuario;
+        if ( (request.user) && (request.user.id) ) 
+                usuario=request.user.id; //coge el usuario del token jwt de la request
+            else    
+                usuario=request.session.userId; //coge el usuario logado
         Tienda.create( 
         { 
             titulo:request.body.titulo, 
             descripcion: request.body.descripcion,
             aceptaCreditCard: request.body.aceptaCreditCard,
-            _usuario: request.session.userId 
+            _usuario:usuario
+
         }
         )
         .then( function( tienda ) {
             console.log("...tienda creada OK.");  
+            response.header("Access-Control-Allow-Origin","*"); 
             response.send(tienda);
 
         }  
@@ -95,7 +106,7 @@ function ejemplo (request, response) {
     function listadoPaginado (request, response) {
         Tienda.paginate( { },{ page:request.query.pagina || 1, limit:4, sort:{'_id':-1} } )
         .then ( docs=>{
-            console.log("Request.user:", request.user);
+            //console.log("Docs:", docs);
             response.send( docs);
         })
         .catch ( error=>{
@@ -116,19 +127,7 @@ function ejemplo (request, response) {
         });
     }
 
-
-    function borrar( request, response) {
-        console.log("borrando titulo=", request.params.titulo);
-        Tienda.findOneAndRemove ( {titulo:request.params.titulo})
-        .then ( doc=>{
-            response.send( "Borrado "+request.params.titulo);
-        })
-        .catch ( error=>{
-            response.send(error);
-        });
-    }
-
-    function mostrar( request, response) {
+    function buscarid( request, response) {
         console.log("mostrando request.tienda", request.tienda);
         response.json( request.tienda );
     } 
@@ -158,20 +157,16 @@ function ejemplo (request, response) {
         response.send("Ficheros Subidos"); 
     }
 
-    // Verifica que la tienda que se acaba de buscar (copiada en request.tienda), su usuario propietario coincide con el
-    // que está lanzando la petición actual (copiado request.session.usuario)
-    function verificarPropietario( request, response, next ) {
-        console.log("verificarPropietario()...");
-        console.log("Sesion:", request.session.usuario);
-        console.log("request.tienda:", request.tienda);
-        if ( !request.tienda ) next(); 
-        if ( !request.session.usuario ) next (new Error("Ningun usuario en Login"));
-        if ( (request.tienda._usuario == request.session.usuario._id) || request.session.usuario.admin ) return next();
-        else next (new Error("Usuario no tiene permisos"));
+
+    function mostrar( request, response) {
+        console.log("mostrando request.tienda", request.tienda);
+        response.json( request.tienda );
+    } 
+
+    function verificarPropietario(request, response, next) {
+        next();
     }
 
-
-
-module.exports={ buscar, modificar, ejemplo, formulario, crear, listado, listadoPaginado, titulo,  mostrar, borrar, cargadorMiddleware, verFicheros, verificarPropietario };
+module.exports={ buscar, modificar, ejemplo, formulario, crear, listado, listadoPaginado, titulo, buscarid, borrar, cargadorMiddleware, verFicheros, mostrar, verificarPropietario };
 //Equivale a:
 //module.exports {ejemplo: ejemplo, formulario: formulario, ...}
