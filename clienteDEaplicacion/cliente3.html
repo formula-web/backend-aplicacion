@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente 3. Formulario Crear Tienda</title>
+</head>
+<body>
+    <section>
+        <h1>Formulario Crear Tienda. POST a localhost:3000/tiendas/nueva con token JWT en Authorization header</h1>
+        <form action="http://localhost:3000/tienda/nueva" method="POST">
+            <input name="titulo" placeholder="Nombre tienda" id="titulo">
+            <br>
+            <input name="descripcion" placeholder="Descripcion" id="descripcion">
+            <br>
+            <input name="usuario" placeholder="id usuario" readonly>
+            <br>
+            <select name='aceptacreditcar' id='aceptacreditcar'>
+                <option value=true   label="SI"></option>
+                <option value=false  label="NO"></option>
+            </select>
+            <br>
+            <input name="jwt" placeholder="pon el token JWT" size="80" id="jwt">
+            <br><br>
+            <input id='botonenviar' type="submit" value="Enviar AJAX">
+            <span>&nbsp;&NonBreakingSpace;</span>
+
+            <div id="mensaje"></div>
+        </form>
+    </section>
+    <script src="./cliente3.js"></script>   
+</body>
+</html>
