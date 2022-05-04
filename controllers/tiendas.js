@@ -87,6 +87,7 @@ function ejemplo (request, response) {
         )
        .catch( error=>{
            console.log("Error creando tienda:",error);
+           response.status(422);
            response.send(error);
         }) 
     }
